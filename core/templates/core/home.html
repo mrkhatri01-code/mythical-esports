@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% block title %}Home | Mythical Esports{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Welcome to Mythical Esports</h1>
+
+{% if next_tournament %}
+<div class="mb-6 p-4 bg-white rounded shadow">
+    <h2 class="text-xl font-semibold">Next Tournament: {{ next_tournament.name }}</h2>
+    <p>Game: {{ next_tournament.game }} | Prize: {{ next_tournament.prize_pool }} | Date: {{ next_tournament.date }}</p>
+    <img src="{{ next_tournament.banner.url }}" alt="Banner" class="my-2 w-full max-w-md rounded">
+    <div id="countdown" class="text-2xl font-bold"></div>
+    <script>
+        const eventDate = new Date("{{ next_tournament.date|date:'c' }}").getTime();
+        const countdown = document.getElementById('countdown');
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+            if (distance < 0) {
+                countdown.innerHTML = "Tournament Started!";
+                return;
+            }
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            countdown.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        }, 1000);
+    </script>
+</div>
+{% endif %}
+
+<div class="my-6">
+    <h2 class="text-lg font-semibold mb-2">Subscribe to our Newsletter</h2>
+    <form action="{% url 'subscribe' %}" method="post" class="flex max-w-md">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Your email" required class="rounded-l px-2 py-1 border w-full">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded-r">Subscribe</button>
+    </form>
+</div>
+
+{% if sponsors %}
+<div class="my-6">
+    <h2 class="text-lg font-semibold mb-2">Our Sponsors</h2>
+    <div class="flex flex-wrap gap-4">
+        {% for sponsor in sponsors %}
+            <a href="{{ sponsor.link }}" target="_blank">
+                <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}" class="h-16 object-contain bg-white rounded shadow p-2">
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if testimonials %}
+<div class="my-6">
+    <h2 class="text-lg font-semibold mb-2">Testimonials</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for testimonial in testimonials %}
+        <div class="bg-white p-4 rounded shadow flex items-center">
+            {% if testimonial.photo %}
+            <img src="{{ testimonial.photo.url }}" alt="{{ testimonial.name }}" class="h-12 w-12 rounded-full mr-4">
+            {% endif %}
+            <div>
+                <p class="italic">"{{ testimonial.content }}"</p>
+                <p class="font-semibold mt-2">- {{ testimonial.name }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if streams %}
+<div class="my-6">
+    <h2 class="text-lg font-semibold mb-2">Live Streams</h2>
+    <div class="flex flex-wrap gap-4">
+        {% for stream in streams %}
+            {% if stream.platform == 'twitch' %}
+                <iframe src="https://player.twitch.tv/?channel={{ stream.url|cut:'https://www.twitch.tv/' }}&parent={{ request.get_host }}" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe>
+            {% elif stream.platform == 'youtube' %}
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ stream.url|cut:'https://www.youtube.com/watch?v=' }}" frameborder="0" allowfullscreen></iframe>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %} 

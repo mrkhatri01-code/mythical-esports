@@ -1,0 +1,62 @@
+/* Center the login form and logo */
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+#login-form .card {
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    padding: 2rem 2.5rem;
+    background: #fff;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+#login-form img {
+    width: 120px;
+    margin-bottom: 1.5rem;
+}
+
+#login-form h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #18181b;
+}
+
+#login-form label {
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+#login-form input[type="text"],
+#login-form input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+#login-form button[type="submit"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #f43f5e 0%, #f59e42 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#login-form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #f59e42 0%, #f43f5e 100%);
+} 

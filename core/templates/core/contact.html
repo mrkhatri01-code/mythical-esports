@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+{% block title %}Contact | Mythical Esports{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-extrabold mb-6">Contact Us</h1>
+{% if success %}
+    <div class="bg-green-100 text-green-800 p-4 rounded mb-4">Thank you for contacting us! We'll get back to you soon.</div>
+{% endif %}
+<div class="flex justify-center">
+<form method="post" class="bg-white/90 rounded-2xl shadow-xl p-8 w-full max-w-xl space-y-6">
+    {% csrf_token %}
+    <div class="relative">
+        <input type="text" name="name" id="id_name" value="{{ form.name.value|default:'' }}" required class="peer block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 bg-gray-50" placeholder=" " />
+        <label for="id_name" class="absolute left-4 top-3 text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-4 peer-focus:text-sm peer-focus:text-orange-600 bg-white px-1">Name</label>
+        {% if form.name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.name.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="relative">
+        <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required class="peer block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 bg-gray-50" placeholder=" " />
+        <label for="id_email" class="absolute left-4 top-3 text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-4 peer-focus:text-sm peer-focus:text-orange-600 bg-white px-1">Email</label>
+        {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="relative">
+        <textarea name="message" id="id_message" rows="5" required class="peer block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 bg-gray-50 resize-none" placeholder=" ">{{ form.message.value|default:'' }}</textarea>
+        <label for="id_message" class="absolute left-4 top-3 text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-4 peer-focus:text-sm peer-focus:text-orange-600 bg-white px-1">Message</label>
+        {% if form.message.errors %}<p class="text-red-500 text-xs mt-1">{{ form.message.errors.0 }}</p>{% endif %}
+    </div>
+    <button type="submit" class="w-full py-3 rounded-lg font-bold text-lg text-white bg-gradient-to-r from-orange-500 to-yellow-400 shadow hover:from-orange-600 hover:to-yellow-500 transition">Send</button>
+</form>
+</div>
+{% endblock %} 

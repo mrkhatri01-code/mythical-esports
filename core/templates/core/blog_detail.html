@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ post.title }} | Blog | Mythical Esports{% endblock %}
+{% block content %}
+<article class="bg-white rounded shadow p-6 max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-2">{{ post.title }}</h1>
+    <p class="text-gray-500 text-sm mb-4">{{ post.created_at }}</p>
+    {% if post.banner %}
+    <img src="{{ post.banner.url }}" alt="Banner" class="my-2 w-full max-w-md rounded">
+    {% endif %}
+    <div class="prose max-w-none">
+        {{ post.content|linebreaks }}
+    </div>
+</article>
+{% endblock %} 

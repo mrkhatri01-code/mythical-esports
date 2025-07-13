@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mythical Esports{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="{% static 'core/logo.png' %}">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow">
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+            <a href="{% url 'home' %}" class="flex items-center gap-2 font-bold text-xl">
+                <img src="{% static 'core/logo.png' %}" alt="Mythical Esports Logo" class="h-10 w-10 rounded-full shadow" />
+                Mythical Esports
+            </a>
+            <div>
+                <a href="{% url 'tournaments' %}" class="mx-2">Tournaments</a>
+                <a href="{% url 'teams' %}" class="mx-2">Teams</a>
+                <a href="{% url 'players' %}" class="mx-2">Players</a>
+                <a href="{% url 'blog_list' %}" class="mx-2">Blog</a>
+                <a href="{% url 'contact' %}" class="mx-2">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container mx-auto px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-white shadow mt-8 py-4 text-center">
+        &copy; {% now "Y" %} Mythical Esports
+    </footer>
+</body>
+</html> 
