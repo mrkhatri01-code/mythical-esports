@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Tournament, Team, Player, Sponsor, Subscriber, BlogPost, Testimonial, Stream
+from .models import Tournament, Team, Player, Sponsor, Subscriber, BlogPost, Testimonial, Stream, SocialLink
 from .forms import SubscriberForm, ContactForm
 
 # Create your views here.
@@ -13,11 +13,13 @@ def home(request):
     sponsors = Sponsor.objects.all()
     testimonials = Testimonial.objects.all()
     streams = Stream.objects.all()
+    social_links = SocialLink.objects.all()
     return render(request, 'core/home.html', {
         'next_tournament': next_tournament,
         'sponsors': sponsors,
         'testimonials': testimonials,
         'streams': streams,
+        'social_links': social_links,
     })
 
 def tournaments(request):

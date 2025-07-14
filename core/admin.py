@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
-from .models import Tournament, Team, Player, Sponsor, Subscriber, Contact, BlogPost, Testimonial, Stream, UserProfile
+from .models import Tournament, Team, Player, Sponsor, Subscriber, Contact, BlogPost, Testimonial, Stream, SocialLink
 
 User = get_user_model()
 
@@ -11,17 +11,9 @@ ALLOWED_CORE_ADMINS = [
 ]
 
 def is_core_admin(user):
-    return user.is_superuser or (
-        hasattr(user, 'userprofile') and getattr(user.userprofile, 'is_core_admin', False)
-    ) or (hasattr(user, 'email') and user.email in ALLOWED_CORE_ADMINS)
-
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
-    can_delete = False
-    verbose_name_plural = 'Profile'
+    return user.is_superuser or (hasattr(user, 'email') and user.email in ALLOWED_CORE_ADMINS)
 
 class CustomUserAdmin(DefaultUserAdmin):
-    inlines = (UserProfileInline,)
     def has_delete_permission(self, request, obj=None):
         if obj and obj.email == 'admin@khatriprabhakar.com.np':
             return False
@@ -41,7 +33,6 @@ class CoreAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(UserProfile)
 
 admin.site.register(Tournament, CoreAdmin)
 admin.site.register(Team, CoreAdmin)
@@ -52,3 +43,4 @@ admin.site.register(Contact, CoreAdmin)
 admin.site.register(BlogPost, CoreAdmin)
 admin.site.register(Testimonial, CoreAdmin)
 admin.site.register(Stream, CoreAdmin)
+admin.site.register(SocialLink, CoreAdmin)

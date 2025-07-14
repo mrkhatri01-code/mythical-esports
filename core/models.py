@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 class Tournament(models.Model):
     name = models.CharField(max_length=200)
@@ -8,6 +7,7 @@ class Tournament(models.Model):
     date = models.DateTimeField()
     banner = models.ImageField(upload_to='tournament_banners/')
     description = models.TextField(blank=True)
+    registration_link = models.URLField(blank=True, help_text='Google Form or registration link')
 
     def __str__(self):
         return self.name
@@ -79,9 +79,10 @@ class Stream(models.Model):
     def __str__(self):
         return f"{self.name} ({self.platform})"
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_core_admin = models.BooleanField(default=False)
+class SocialLink(models.Model):
+    name = models.CharField(max_length=50)
+    url = models.URLField()
+    icon = models.CharField(max_length=50, help_text='FontAwesome icon class, e.g., fab fa-twitter')
 
     def __str__(self):
-        return self.user.email
+        return self.name
