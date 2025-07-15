@@ -34,6 +34,13 @@ def players(request):
     players = Player.objects.all()
     return render(request, 'core/players.html', {'players': players})
 
+def player_detail(request, pk):
+    
+    from .models import Player
+    from django.shortcuts import get_object_or_404
+    player = get_object_or_404(Player, pk=pk)
+    return render(request, 'core/player_detail.html', {'player': player})
+
 def sponsors(request):
     sponsors = Sponsor.objects.all()
     return render(request, 'core/sponsors.html', {'sponsors': sponsors})
@@ -74,3 +81,9 @@ def subscribe(request):
             # Optionally: sync with Mailchimp here
             return redirect('home')
     return redirect('home')
+
+def team_detail(request, pk):
+    team = get_object_or_404(Team, pk=pk)
+    players = team.players.all()
+    results = team.teamtournamentresult_set.select_related('tournament').all()
+    return render(request, 'core/team_detail.html', {'team': team, 'players': players, 'results': results})

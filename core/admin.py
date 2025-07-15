@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
-from .models import Tournament, Team, Player, Sponsor, Subscriber, Contact, BlogPost, Testimonial, Stream, SocialLink
+from .models import Tournament, Team, Player, Sponsor, Subscriber, Contact, BlogPost, Testimonial, Stream, SocialLink, TeamTournamentResult
 
 User = get_user_model()
 
@@ -26,17 +26,30 @@ def core_admin_permission(method):
     return wrapper
 
 class CoreAdmin(admin.ModelAdmin):
-    has_module_permission = core_admin_permission(lambda self, request: True)
+    def has_module_permission(self, request):
+        return request.user.is_staff
     has_add_permission = core_admin_permission(lambda self, request: True)
     has_change_permission = core_admin_permission(lambda self, request, obj=None: True)
     has_delete_permission = core_admin_permission(lambda self, request, obj=None: True)
+
+class PlayerAdmin(CoreAdmin):
+    list_display = ('name', 'team', 'player_card')
+    readonly_fields = ('player_card',)
+
+class TeamTournamentResultInline(admin.TabularInline):
+    model = TeamTournamentResult
+    extra = 1
+
+class TeamAdmin(admin.ModelAdmin):
+    filter_horizontal = ()
+    inlines = [TeamTournamentResultInline]
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(Tournament, CoreAdmin)
-admin.site.register(Team, CoreAdmin)
-admin.site.register(Player, CoreAdmin)
+admin.site.register(Team, TeamAdmin)
+admin.site.register(Player, PlayerAdmin)
 admin.site.register(Sponsor, CoreAdmin)
 admin.site.register(Subscriber, CoreAdmin)
 admin.site.register(Contact, CoreAdmin)
@@ -44,3 +57,4 @@ admin.site.register(BlogPost, CoreAdmin)
 admin.site.register(Testimonial, CoreAdmin)
 admin.site.register(Stream, CoreAdmin)
 admin.site.register(SocialLink, CoreAdmin)
+admin.site.register(TeamTournamentResult, CoreAdmin)

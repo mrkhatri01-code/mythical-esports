@@ -147,8 +147,8 @@ JAZZMIN_SETTINGS = {
     "site_header": "Mythical Esports",
     "site_brand": "Mythical Esports",
     "welcome_sign": "Welcome to Mythical Esports Admin",
-    "site_logo": "core/logo.png",
     "login_logo": "core/logo.png",
-    "login_logo_dark": "core/logo.png",
+    "site_logo": "core/logo.png",
+    "custom_css": "core/admin_custom.css",
     # You can add more Jazzmin settings here as needed
 }

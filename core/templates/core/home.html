@@ -72,14 +72,22 @@
 
 {% if streams %}
 <div class="my-6">
-    <h2 class="text-lg font-semibold mb-2">Live Streams</h2>
-    <div class="flex flex-wrap gap-4">
+    <h2 class="text-lg font-semibold mb-4">Live Streams</h2>
+    <div class="flex flex-col md:flex-row flex-wrap gap-8 justify-center items-center">
         {% for stream in streams %}
-            {% if stream.platform == 'twitch' %}
-                <iframe src="https://player.twitch.tv/?channel={{ stream.url|cut:'https://www.twitch.tv/' }}&parent={{ request.get_host }}" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe>
-            {% elif stream.platform == 'youtube' %}
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ stream.url|cut:'https://www.youtube.com/watch?v=' }}" frameborder="0" allowfullscreen></iframe>
-            {% endif %}
+            <div class="bg-white/80 backdrop-blur rounded-2xl shadow-lg p-4 flex flex-col items-center w-full md:w-[620px]">
+                <div class="w-full flex justify-center">
+                {% if stream.platform == 'twitch' %}
+                    <iframe src="https://player.twitch.tv/?channel={{ stream.url|cut:'https://www.twitch.tv/' }}&parent={{ request.get_host }}" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620" class="rounded-xl"></iframe>
+                {% elif stream.platform == 'youtube' %}
+                    {% if 'watch?v=' in stream.url %}
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ stream.url|cut:'https://www.youtube.com/watch?v=' }}" frameborder="0" allowfullscreen class="rounded-xl"></iframe>
+                    {% elif 'channel/' in stream.url %}
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel={{ stream.url|cut:'https://www.youtube.com/channel/' }}" frameborder="0" allowfullscreen class="rounded-xl"></iframe>
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
         {% endfor %}
     </div>
 </div>
