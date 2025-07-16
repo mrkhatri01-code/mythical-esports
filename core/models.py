@@ -119,10 +119,11 @@ class Testimonial(models.Model):
 class Stream(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField()
-    platform = models.CharField(max_length=20, choices=[('twitch', 'Twitch'), ('youtube', 'YouTube')])
+    platform = models.CharField(choices=[('twitch', 'Twitch'), ('youtube', 'YouTube')], max_length=20)
+    featured = models.BooleanField(default=False, help_text='Show this stream/video on the Streams & Videos page')
 
     def __str__(self):
-        return f"{self.name} ({self.platform})"
+        return self.name
 
 class SocialLink(models.Model):
     name = models.CharField(max_length=50)

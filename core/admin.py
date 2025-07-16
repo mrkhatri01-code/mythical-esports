@@ -44,10 +44,15 @@ class TeamAdmin(admin.ModelAdmin):
     filter_horizontal = ()
     inlines = [TeamTournamentResultInline]
 
+class TournamentAdmin(CoreAdmin):
+    inlines = [TeamTournamentResultInline]
+    class Media:
+        js = ('core/admin_tournament_currency.js',)
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
-admin.site.register(Tournament, CoreAdmin)
+admin.site.register(Tournament, TournamentAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Sponsor, CoreAdmin)

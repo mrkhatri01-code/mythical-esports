@@ -5,8 +5,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Tournament, Team, Player, Sponsor, Subscriber, BlogPost, Testimonial, Stream, SocialLink
 from .forms import SubscriberForm, ContactForm
-from django.contrib.admin.views.decorators import staff_member_required
-from core.models import Contact, Player
 
 # Create your views here.
 
@@ -102,33 +100,3 @@ def team_detail(request, pk):
 def streams_list(request):
     streams = Stream.objects.all()
     return render(request, 'core/streams.html', {'streams': streams})
-
-@staff_member_required
-def admin_dashboard(request):
-    # Stat cards
-    total_contacts = Contact.objects.count()
-    active_contacts = Contact.objects.filter(message__isnull=False).count()
-    player_count = Player.objects.count()
-    staff_count = 2  # Placeholder, adjust as needed
-    # Directory
-    contacts = Contact.objects.all().order_by('-id')[:10]
-    contact_list = []
-    for c in contacts:
-        contact_list.append({
-            'name': c.name,
-            'email': c.email,
-            'joined': getattr(c, 'date_sent', timezone.now()),
-            'last_active': getattr(c, 'date_sent', timezone.now()),
-            'rating': 4.8,  # Placeholder
-            'tags': [
-                {'label': 'Active', 'color': 'text-green-700', 'bg': 'green'}
-            ]
-        })
-    context = {
-        'total_contacts': total_contacts,
-        'active_contacts': active_contacts,
-        'player_count': player_count,
-        'staff_count': staff_count,
-        'contacts': contact_list,
-    }
-    return render(request, 'admin/index.html', context)
