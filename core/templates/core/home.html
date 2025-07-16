@@ -3,34 +3,41 @@
 {% load humanize %}
 {% block title %}Home | Mythical Esports{% endblock %}
 {% block content %}
-<div class="relative min-h-[400px] flex flex-col-reverse md:flex-row items-center justify-between rounded-3xl overflow-hidden bg-gradient-to-br from-orange-600 via-orange-400 to-yellow-400 shadow-xl p-4 sm:p-6 md:p-10 lg:p-16 mb-10 gap-8 md:gap-0">
-    <div class="flex-1 z-10 flex flex-col justify-center items-start text-white max-w-full md:max-w-xl w-full">
-        <span class="inline-block bg-white/20 text-orange-100 font-semibold px-4 py-1 rounded-full mb-4 text-xs sm:text-sm shadow">🔥 Premier Esports Platform</span>
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">
+<div class="relative min-h-[420px] flex flex-col md:flex-row items-center justify-between rounded-3xl overflow-hidden bg-gradient-to-br from-orange-600 via-orange-400 to-yellow-400 shadow-xl p-4 sm:p-8 md:p-12 lg:p-16 mb-10 gap-8 md:gap-0">
+    <!-- Watermark Logo Background -->
+    <img src="{% static 'core/logo.png' %}" alt="Mythical Esports Watermark" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-2xl opacity-10 pointer-events-none select-none z-0 hidden md:block" style="filter: blur(1px);" />
+    <div class="flex-1 z-10 flex flex-col justify-center items-start md:items-start text-white max-w-full md:max-w-xl w-full">
+        <span class="inline-block bg-white/20 text-orange-100 font-semibold px-4 py-1 rounded-full mb-4 text-xs sm:text-xs shadow">🔥 Premier Esports Platform</span>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg tracking-tight bg-gradient-to-r from-yellow-300 via-orange-400 to-orange-600 bg-clip-text text-transparent" style="text-shadow: 0 2px 16px rgba(255,140,0,0.18);">
             Mythical <span class="text-yellow-300">Esports</span>
         </h1>
-        <p class="text-base sm:text-lg md:text-2xl font-medium mb-6 sm:mb-8 text-white/90 drop-shadow">Experience the future of competitive gaming. Follow epic tournaments, legendary teams, and breaking news.</p>
-        <div class="flex flex-col sm:flex-row gap-4 mb-8 w-full">
-            <a href="{% url 'tournaments' %}" class="gradient-btn px-6 py-3 text-base sm:text-lg shadow-lg hover:scale-105 transition text-center w-full sm:w-auto">Explore Tournaments <i class="fa fa-arrow-right ml-2"></i></a>
-            <a href="{% url 'streams' %}" class="px-6 py-3 text-base sm:text-lg rounded-lg border-2 border-white/70 text-white font-bold bg-white/10 hover:bg-white/20 transition shadow-lg text-center w-full sm:w-auto">Watch Streams & Videos</a>
+        <p class="text-base sm:text-lg md:text-xl lg:text-2xl font-medium mb-7 text-white/90 drop-shadow max-w-2xl">Experience the future of competitive gaming. Follow epic tournaments, legendary teams, and breaking news.</p>
+        <div class="flex flex-col sm:flex-row gap-4 mb-10 w-full max-w-md">
+            <a href="{% url 'tournaments' %}" class="px-7 py-3 text-base sm:text-lg font-bold rounded-xl shadow-lg bg-white/20 backdrop-blur-md border border-orange-200/40 text-orange-900 hover:bg-orange-500/80 hover:text-white transition glass focus:outline-none focus:ring-2 focus:ring-yellow-300">Explore Tournaments <i class="fa fa-arrow-right ml-2"></i></a>
+            <a href="{% url 'streams' %}" class="px-7 py-3 text-base sm:text-lg font-bold rounded-xl border-2 border-white/70 text-white bg-white/10 hover:bg-white/30 transition shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-400">Watch Streams & Videos</a>
         </div>
-        <div class="flex flex-col sm:flex-row gap-6 sm:gap-12 mt-4 sm:mt-6 text-white/90 w-full items-center">
-            <div class="flex flex-col items-start">
+        <!-- Stats Row: Responsive and Centered on All Devices -->
+        <div class="flex flex-col sm:flex-row gap-6 sm:gap-12 mt-4 sm:mt-6 text-white/90 w-full max-w-2xl mx-auto items-center justify-center">
+            <div class="flex flex-col items-center flex-1 min-w-[90px]">
                 <span class="text-2xl sm:text-3xl font-extrabold">{{ tournaments_count }}</span>
                 <span class="text-xs sm:text-base font-medium">Tournaments</span>
             </div>
-            <div class="flex flex-col items-start">
+            <div class="flex flex-col items-center flex-1 min-w-[90px]">
                 <span class="text-2xl sm:text-3xl font-extrabold">{{ teams_count }}</span>
                 <span class="text-xs sm:text-base font-medium">Teams</span>
             </div>
-            <div class="flex flex-col items-start">
-                <span class="text-2xl sm:text-3xl font-extrabold" id="prize-pool-value" data-npr="{{ prize_pool_sum|default:'0' }}">NPR {{ prize_pool_sum|default:"0"|intcomma }}</span>
+            <div class="flex flex-col items-center flex-1 min-w-[120px]">
+                <span class="text-2xl sm:text-3xl font-extrabold">NPR {{ prize_pool_sum|default:"0"|intcomma }}</span>
                 <span class="text-xs sm:text-base font-medium">Prize Pool</span>
             </div>
         </div>
     </div>
-    <div class="flex-1 flex justify-center items-center z-0 mb-6 md:mb-0 w-full">
-        <img src="{% static 'core/logo.png' %}" alt="Mythical Esports Logo" class="w-40 h-40 sm:w-60 sm:h-60 md:w-[340px] md:h-[340px] lg:w-[420px] lg:h-[420px] object-contain drop-shadow-2xl animate-fade-in-up" />
+    <!-- Foreground Logo (right/center) -->
+    <div class="flex-1 flex justify-center items-center z-10 mb-6 md:mb-0 w-full">
+        <div class="relative flex justify-center items-center w-full">
+            <img src="{% static 'core/logo.png' %}" alt="Mythical Esports Logo" class="w-40 h-40 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-96 lg:h-96 object-contain drop-shadow-2xl animate-fade-in-up opacity-95 shadow-[0_0_60px_10px_rgba(255,180,60,0.25)]" />
+            <span class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2/3 h-3 bg-gradient-to-r from-orange-400 via-yellow-300 to-orange-400 rounded-full blur-md opacity-40 z-0"></span>
+        </div>
     </div>
     <div class="absolute inset-0 bg-gradient-to-br from-orange-700/80 via-orange-400/60 to-yellow-300/60 pointer-events-none" style="z-index:1;"></div>
 </div>

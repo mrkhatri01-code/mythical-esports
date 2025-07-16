@@ -7,7 +7,7 @@
     <div class="relative bg-white/80 backdrop-blur rounded-2xl shadow-lg p-4 flex flex-col items-center transition hover:scale-105 hover:shadow-2xl group">
         <img src="{{ tournament.banner.url }}" alt="Banner" class="w-full h-40 object-cover rounded-xl mb-4">
         <div class="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow">
-            <span class="tournament-prize-pool" id="prize-pool-value-{{ tournament.id }}" data-npr="{{ tournament.prize_pool|default:'0' }}">NPR {{ tournament.prize_pool|default:'0' }}</span>
+            <span>NPR {{ tournament.prize_pool|default:'0' }}</span>
         </div>
         <h2 class="text-xl font-bold text-orange-600 mb-1">{{ tournament.name }}</h2>
         <div class="flex items-center gap-2 text-sm text-gray-600 mb-2 w-full">

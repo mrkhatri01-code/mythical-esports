@@ -75,29 +75,12 @@
                 <a href="{% url 'blog_list' %}" class="nav-link hover:text-orange-500 font-semibold transition">Blog</a>
                 <a href="{% url 'contact' %}" class="nav-link hover:text-orange-500 font-semibold transition">Contact</a>
                 <!-- Currency Converter Desktop -->
-                <div class="ml-4 flex items-center">
-                    <label for="currency-select" class="sr-only">Currency</label>
-                    <select id="currency-select" class="rounded px-2 py-1 text-gray-800 text-xs font-semibold bg-white/80 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                        <option value="NPR">NPR</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                    </select>
-                </div>
+                <!-- Removed currency converter dropdown -->
             </div>
         </div>
         <!-- Mobile menu -->
         <div x-show="open" class="sm:hidden glass border-t border-orange-100/60 shadow-md animate-fade-in-down">
-            <!-- Currency Converter Mobile: place at the top, centered, with spacing -->
-            <div class="flex justify-center py-3">
-                <div class="w-full max-w-xs flex items-center justify-center">
-                    <label for="currency-select-mobile" class="sr-only">Currency</label>
-                    <select id="currency-select-mobile" class="rounded px-4 py-2 text-gray-800 text-base font-semibold bg-white/90 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 w-full shadow">
-                        <option value="NPR">NPR</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                    </select>
-                </div>
-            </div>
+            <!-- Removed currency converter mobile dropdown -->
             <div class="flex flex-col gap-2 px-4 py-4">
                 <a href="{% url 'home' %}" class="py-2 px-2 rounded hover:bg-orange-50 font-semibold transition">Home</a>
                 <a href="{% url 'tournaments' %}" class="py-2 px-2 rounded hover:bg-orange-50 font-semibold transition">Tournaments</a>
@@ -146,81 +129,7 @@
           el.style.transform = 'translateY(0)';
         }, 100);
       });
-      // Currency Converter Logic (global)
-      // Rates are injected as floats from Django context, no quotes, no trailing comma
-      let rates = {
-        'NPR': 1,
-        'USD': {{ currency_rates.USD|default:'0.0075'|floatformat:'6'|cut:',' }},
-        'EUR': {{ currency_rates.EUR|default:'0.0069'|floatformat:'6'|cut:',' }}
-      };
-      async function fetchLiveRates() {
-        try {
-          const response = await fetch('/api/currency/');
-          if (response.ok) {
-            const data = await response.json();
-            if (data.currency_rates) {
-              rates = data.currency_rates;
-            }
-          }
-        } catch (e) {
-          // Optionally show a warning to the user
-        }
-      }
-      function formatNumber(num) {
-        return num.toLocaleString();
-      }
-      function updatePrizePoolGlobal() {
-        // Get selected currency (desktop or mobile)
-        let currency = 'NPR';
-        const desktopSelect = document.getElementById('currency-select');
-        const mobileSelect = document.getElementById('currency-select-mobile');
-        if (window.innerWidth >= 640 && desktopSelect) {
-          currency = desktopSelect.value;
-        } else if (mobileSelect) {
-          currency = mobileSelect.value;
-        }
-        // Update all main prize pool values
-        document.querySelectorAll('#prize-pool-value').forEach(function(valueSpan) {
-          const nprValue = parseFloat(valueSpan.getAttribute('data-npr')) || 0;
-          let value = nprValue * rates[currency];
-          if (currency === 'NPR') {
-            valueSpan.textContent = `NPR ${formatNumber(Math.round(value))}`;
-          } else {
-            valueSpan.textContent = `${currency} ${formatNumber(value.toFixed(2))}`;
-          }
-        });
-        // Update all tournament prize pool values
-        document.querySelectorAll('.tournament-prize-pool').forEach(function(valueSpan) {
-          const nprValue = parseFloat(valueSpan.getAttribute('data-npr')) || 0;
-          let value = nprValue * rates[currency];
-          if (currency === 'NPR') {
-            valueSpan.textContent = `NPR ${formatNumber(Math.round(value))}`;
-          } else {
-            valueSpan.textContent = `${currency} ${formatNumber(value.toFixed(2))}`;
-          }
-        });
-      }
-      async function handleCurrencyChange() {
-        await fetchLiveRates();
-        updatePrizePoolGlobal();
-      }
-      document.addEventListener('DOMContentLoaded', function() {
-        const desktopSelect = document.getElementById('currency-select');
-        const mobileSelect = document.getElementById('currency-select-mobile');
-        if (desktopSelect) desktopSelect.addEventListener('change', handleCurrencyChange);
-        if (mobileSelect) mobileSelect.addEventListener('change', handleCurrencyChange);
-        // Sync selects
-        if (desktopSelect && mobileSelect) {
-          desktopSelect.addEventListener('change', function() {
-            mobileSelect.value = desktopSelect.value;
-          });
-          mobileSelect.addEventListener('change', function() {
-            desktopSelect.value = mobileSelect.value;
-          });
-        }
-        fetchLiveRates().then(updatePrizePoolGlobal);
-      });
-      window.addEventListener('resize', updatePrizePoolGlobal);
+      // Removed all currency converter logic
     </script>
 </body>
 </html> 
