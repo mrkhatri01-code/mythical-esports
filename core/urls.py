@@ -14,4 +14,5 @@ urlpatterns = [
     path('subscribe/', views.subscribe, name='subscribe'),
     path('sponsors/', views.sponsors, name='sponsors'),
     path('streams/', views.streams_list, name='streams'),
+    path('api/currency/', views.currency_rates_api, name='currency_rates_api'),
 ] 

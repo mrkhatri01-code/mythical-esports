@@ -153,6 +153,19 @@
         'USD': {{ currency_rates.USD|default:'0.0075'|floatformat:'6'|cut:',' }},
         'EUR': {{ currency_rates.EUR|default:'0.0069'|floatformat:'6'|cut:',' }}
       };
+      async function fetchLiveRates() {
+        try {
+          const response = await fetch('/api/currency/');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.currency_rates) {
+              rates = data.currency_rates;
+            }
+          }
+        } catch (e) {
+          // Optionally show a warning to the user
+        }
+      }
       function formatNumber(num) {
         return num.toLocaleString();
       }
@@ -187,11 +200,15 @@
           }
         });
       }
+      async function handleCurrencyChange() {
+        await fetchLiveRates();
+        updatePrizePoolGlobal();
+      }
       document.addEventListener('DOMContentLoaded', function() {
         const desktopSelect = document.getElementById('currency-select');
         const mobileSelect = document.getElementById('currency-select-mobile');
-        if (desktopSelect) desktopSelect.addEventListener('change', updatePrizePoolGlobal);
-        if (mobileSelect) mobileSelect.addEventListener('change', updatePrizePoolGlobal);
+        if (desktopSelect) desktopSelect.addEventListener('change', handleCurrencyChange);
+        if (mobileSelect) mobileSelect.addEventListener('change', handleCurrencyChange);
         // Sync selects
         if (desktopSelect && mobileSelect) {
           desktopSelect.addEventListener('change', function() {
@@ -201,7 +218,7 @@
             desktopSelect.value = mobileSelect.value;
           });
         }
-        updatePrizePoolGlobal();
+        fetchLiveRates().then(updatePrizePoolGlobal);
       });
       window.addEventListener('resize', updatePrizePoolGlobal);
     </script>

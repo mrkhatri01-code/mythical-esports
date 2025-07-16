@@ -3,6 +3,8 @@ from django.core.paginator import Paginator
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import JsonResponse
+import requests
 from .models import Tournament, Team, Player, Sponsor, Subscriber, BlogPost, Testimonial, Stream, SocialLink
 from .forms import SubscriberForm, ContactForm
 
@@ -100,3 +102,18 @@ def team_detail(request, pk):
 def streams_list(request):
     streams = Stream.objects.all()
     return render(request, 'core/streams.html', {'streams': streams})
+
+def currency_rates_api(request):
+    API_KEY = '8d65df6517-4ad2ea7b3f-szh76b'
+    API_URL = 'https://api.primeapi.io/fx/quote?pairs=NPR/USD,NPR/EUR'
+    rates = {'NPR': 1, 'USD': 0.0075, 'EUR': 0.0069}  # fallback
+    try:
+        res = requests.get(API_URL, headers={'X-API-Key': API_KEY}, timeout=5)
+        data = res.json().get('data', {})
+        if 'NPR/USD' in data:
+            rates['USD'] = data['NPR/USD']['mid']
+        if 'NPR/EUR' in data:
+            rates['EUR'] = data['NPR/EUR']['mid']
+    except Exception:
+        pass
+    return JsonResponse({'currency_rates': rates})
